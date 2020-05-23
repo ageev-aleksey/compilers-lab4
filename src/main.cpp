@@ -24,42 +24,39 @@
 /*)*/                     {  '5',      '>',   '>',    '>',  '6','>', '>'},
 /*$*/                     {  '<',      '<',   '<',    '<',  '<','7', '8'},};
 
-std::string rpnFromGraph(Graph<std::string, Empty> graph) {
-    using Graph_t = Graph<std::string, Empty>;
-    std::string res;
-    std::stack<int> stack;
-    std::stack<int> parents;
-    stack.push(graph.lastNode().getIndex());
-    parents.push(-1);
-    parents.push(-1);
-    while(!stack.empty()) {
-        int n = stack.top();
-        stack.pop();
-        int p = parents.top();
-        parents.pop();
-        int before_parent = parents.top();
-        auto node = graph.getNodeByIndex(n);
-        if(node.getLinks().empty()) {
-            res.append(node.getData());
-        } else {
-            for(Graph_t::Link &l : node.getLinks()) {
-                stack.push(l.node.getIndex());
-                parents.push(n);
-            }
-        }
 
-        if(p != before_parent) {
-            if(graph.getNodeByIndex(p).getData() != "E")
-            res.append(graph.getNodeByIndex(p).getData());
-        }
-
-    }
-
-    return res;
-
-}
 
 void errorHandler(char typeError) {
+    std::cout << "ERROR: ";
+    std::cout << typeError << " ";
+    switch(typeError) {
+        case '0':
+            std::cout << "между аргументами отсутсвует оператор" << std::endl;
+            break;
+        case '1':
+            std::cout  << "между аргументом и открывающейся скобкой должен быть оператор" << std::endl;
+            break;
+        case '2':
+            std::cout  << "две и более операций отношения не могут идти подряд" << std::endl;
+            break;
+        case '3':
+            std::cout  << "после операции отношения не хватает " << std::endl;
+            break;
+
+        case '4':
+            std::cout << "Забыта заырывающая скобка" << std::endl;
+            break;
+        case '5':
+            std::cout << "после закрывающей скобки должен идти оператор" << std::endl;
+            break;
+        case '6':
+            std::cout << "между скобками необходим оператор" << std::endl;
+            break;
+        case '7':
+            std::cout << "Забыта открывающая скобка" << std::endl;
+        case '8':
+            std::cout << "Пустой ввод" << std::endl;
+    }
 
 }
 
@@ -84,8 +81,15 @@ int main(int argc, char **argv){
 //        return -3;
 //    }
     parser.run();
-    auto graph = parser.getGraph();
-    saveImageGV(graphToDOT(graph), "graph");
-    std::cout << rpnFromGraph(graph) << std::endl;
+    auto s = parser.get();
+    std::cout << "Обратная польская запись: " << std::endl;
+    while(!s.empty()) {
+        Token t = s.top();
+        s.pop();
+        if(t.type != TokenType::ORBRACKET && t.type != TokenType::CRBRACKET) {
+            std::cout << t.value << " ";
+        }
+    }
+    std::cout << std::endl;
     return 0;
 }

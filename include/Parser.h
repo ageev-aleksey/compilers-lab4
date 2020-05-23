@@ -14,11 +14,11 @@ public:
     using Graph_t =Graph<std::string, Empty>;
     Parser(Lexer l, std::vector<std::vector<char>> t, void (*errorHandler)(char typeError));
     bool run();
-    Graph_t getGraph();
+    std::stack<Token> get();
 private:
     Lexer lexer;
+    std::stack<Token> conv;
     std::vector<std::vector<char>> table;
-    Graph<std::string, Empty> g;
     void (*errorHandler)(char typeError);
 };
 
