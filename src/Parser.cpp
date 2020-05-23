@@ -17,7 +17,7 @@ bool Parser::run() {
     const Token NT = {TokenType::NonTerminal, "E"};
     Token b = lexer.next();
     std::stack<std::pair<typename Graph_t::iterator, Token>> stack;
-    std::stack<typename Graph_t::iterator> conv;
+    std::stack<std::string> conv;
     auto root = g.addNodeInBack("<program>");
     stack.push({root, {TokenType::END, "$"}});
     std::pair<typename Graph_t::iterator, Token> a = stack.top();
@@ -46,21 +46,22 @@ bool Parser::run() {
                     stack.pop();
                     a = stack.top();
 
-                    if(c.second.type == TokenType::MUL_OP || c.second.type == TokenType::SUM_OP) {
-                        auto v1 = conv.top();
-                        conv.pop();
-                        auto v2 = conv.top();
-                        conv.pop();
-                        g.addLink(node, v1, Empty{});
-                        g.addLink(node, c.first, Empty{});
-                        g.addLink(node, v2, Empty{});
-
-                    } else g.addLink(node, c.first, Empty{});
+//                    if(c.second.type == TokenType::MUL_OP || c.second.type == TokenType::SUM_OP) {
+//                        auto v1 = conv.top();
+//                        conv.pop();
+//                        auto v2 = conv.top();
+//                        conv.pop();
+//                        g.addLink(node, v1, Empty{});
+//                        g.addLink(node, c.first, Empty{});
+//                        g.addLink(node, v2, Empty{});
+//
+//                    } else g.addLink(node, c.first, Empty{});
+                    conv.push(c.second.value);
                     std::cout <<  c.second.value <<  " " ;
                 }while( (c.second.type == TokenType::NonTerminal)||
                 ((stack.size() > 1) && (table[a.second.type][c.second.type] != '<')));
                 std::cout << std::endl;
-                conv.push(node);
+                //conv.push(node);
             } else {
                 errorHandler(table[a.second.type][b.type]);
                 return false;
