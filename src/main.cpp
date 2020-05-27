@@ -40,7 +40,7 @@ void errorHandler(char typeError) {
             std::cout  << "две и более операций отношения не могут идти подряд" << std::endl;
             break;
         case '3':
-            std::cout  << "после операции отношения не хватает " << std::endl;
+            std::cout  << "после операции отношения не хватает аргумента " << std::endl;
             break;
 
         case '4':
@@ -50,7 +50,7 @@ void errorHandler(char typeError) {
             std::cout << "после закрывающей скобки должен идти оператор" << std::endl;
             break;
         case '6':
-            std::cout << "между скобками необходим оператор" << std::endl;
+            std::cout << "между с   кобками необходим оператор" << std::endl;
             break;
         case '7':
             std::cout << "Забыта открывающая скобка" << std::endl;
